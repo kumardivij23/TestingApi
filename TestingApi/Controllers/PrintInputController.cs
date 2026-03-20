@@ -16,6 +16,7 @@ namespace TestingApi.Controllers
         [HttpGet]
         public string Get()
         {
+            Console.WriteLine("hello");
             _logger.LogInformation("PrintInput controller called");
             return "Hello welcome to the controller print";
         }
