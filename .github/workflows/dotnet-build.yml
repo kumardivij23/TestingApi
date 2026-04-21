@@ -1,0 +1,36 @@
+name: .NET Build & Test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - agent/**
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'   # change if you're using 6/7
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      # Run tests (if test projects exist)
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal --configuration Release
