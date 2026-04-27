@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace TestingApi.Controllers
 {
@@ -18,6 +19,13 @@ namespace TestingApi.Controllers
         {
             _logger.LogInformation("PrintInput controller called");
             return "Hello welcome to the controller print";
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] JsonElement body)
+        {
+            _logger.LogInformation("Received POST request with body: {Body}", body.ToString());
+            return Ok(body);
         }
     }
 }
