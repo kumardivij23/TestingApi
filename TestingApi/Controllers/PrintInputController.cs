@@ -21,10 +21,10 @@ namespace TestingApi.Controllers
             return "Hello welcome to the controller print";
         }
 
-        [HttpPost("echo")]
-        public IActionResult Echo([FromBody] JsonElement body)
+        [HttpPost]
+        public IActionResult Post([FromBody] JsonElement body)
         {
-            _logger.LogInformation("Echo endpoint called with body: {Body}", body.GetRawText());
+            _logger.LogInformation("POST /PrintInput called with body: {Body}", body.GetRawText());
             return Ok(body);
         }
     }
