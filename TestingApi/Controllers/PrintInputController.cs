@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TestingApi.Controllers
@@ -18,6 +19,13 @@ namespace TestingApi.Controllers
         {
             _logger.LogInformation("PrintInput controller called");
             return "Hello welcome to the controller print";
+        }
+
+        [HttpPost("echo")]
+        public IActionResult Echo([FromBody] JsonElement body)
+        {
+            _logger.LogInformation("Echo endpoint called with body: {Body}", body.GetRawText());
+            return Ok(body);
         }
     }
 }
