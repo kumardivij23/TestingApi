@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using TestingApi.Models;
 
 namespace TestingApi.Services
