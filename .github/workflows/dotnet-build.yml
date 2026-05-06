@@ -1,37 +1,40 @@
-name: .NET Build & Test
+  name: .NET Build & Test
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - develop
-      - agent/**
-  pull_request:
+  on:
+    workflow_dispatch:
+      inputs:
+        ticket_attempt:
+          description: "Build attempt number (1-3)"
+          required: false
+          default: "1"
+    push:
+      branches:
+        - main
+        - develop
+        - ai/**        # ← was "agent/**", agent creates branches like ai/ap-123-fix-login
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  jobs:
+    build:
+      runs-on: ubuntu-latest
 
-    steps:
-      # Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
 
-      # Setup .NET
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'   # change if you're using 6/7
+        - name: Setup .NET
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: '8.0.x'
 
-      # Restore dependencies
-      - name: Restore dependencies
-        run: dotnet restore
+        - name: Restore dependencies
+          run: dotnet restore
 
-      # Build
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
+        - name: Build
+          run: dotnet build --no-restore --configuration Release
 
-      # Run tests (if test projects exist)
-      - name: Run tests
-        run: dotnet test --no-build --verbosity normal --configuration Release
+        - name: Run tests
+          run: dotnet test --no-build --verbosity normal --configuration Release
+
+        - name: Report attempt
+          if: always()
+          run: echo "Build attempt ${{ github.event.inputs.ticket_attempt }} completed with status ${{ job.status }}"
