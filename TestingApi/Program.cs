@@ -1,3 +1,5 @@
+using TestingApi.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +11,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 Console.WriteLine("hello world");
+
+// Global exception handling middleware — catches unhandled exceptions across all controllers.
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
